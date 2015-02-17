@@ -1,0 +1,68 @@
+<?
+   include("comum/acsbd.inc");
+   $acsbd = new AcsBD();
+   $acsbd->conectar();
+   $lista_usuarios = $acsbd->obtem_lista_usuarios();
+   $acsbd->desconectar();
+?>
+<html>
+
+<head>
+<title>Cadastro de Usu&aacute;rios de Pe&ccedil;as</title>
+<script>
+
+function muda_acao(acao)
+{
+   document.form_cadastro.acao.value = acao;
+   document.form_cadastro.submit();
+}
+
+
+</script>
+</head>
+<?
+   include("comum/comum.inc");
+?>
+<body bgcolor="<? echo($cor_fundo_principal); ?>">
+<h2>Usu&aacute;rios de Pe&ccedil;as</h2><br>
+<h3>
+<?
+   echo($aviso);
+?>
+<form name=form_cadastro action='ctl_cadastro_usuario_peca.php' method='POST'>
+<input type=hidden name=acao>
+<center>
+<table>
+<tr>
+<td>Novo usu&aacute;rio:<input type=text name=nm_novo_usuario size=20></td>
+<td><input type=button value='Incluir' onclick=muda_acao('incluir')></td>
+</tr>
+<tr>
+<td align=center>
+<?
+   if(empty($lista_usuarios))
+      echo("Nenhum usu&aacute;rio cadastrado");
+   else
+   {
+      echo("<select name=usuario_selecionado size=10>\n");
+      while(list($i,$usuario)=each($lista_usuarios))
+      {
+         if(!isset($usuario_selecionado))
+            $usuario_selecionado=$usuario["id_usuario"];
+         $sel=($usuario_selecionado==$usuario["id_usuario"]?"selected":"");
+         echo("<option value = ".$usuario["id_usuario"]." $sel>".$usuario["nm_usuario"]."</option>");
+      }
+      echo("</select>");
+   }
+?>
+</td>
+<?
+   if(!empty($lista_usuarios))
+      echo("<td valign=center><input type=button value='Excluir' onclick=muda_acao('excluir')></td>");
+?>
+</tr>
+</table>
+</center>
+</form>
+</body>
+</html>

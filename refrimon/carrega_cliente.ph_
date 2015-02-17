@@ -1,0 +1,25 @@
+<html>
+<head>
+<title>Carrega Clientes</title>
+</head>
+<body>
+<?
+   include("comum/acsbd.php");
+   $nm_arquivo_cli = "clientemont.txt";
+
+   $linhas = file($nm_arquivo_cli);
+   $acsbd = new AcsBD();
+   $acsbd->conectar();
+   while(list($i,$linha)=each($linhas))
+   {
+      ereg("([^\t]*)\t([^\t]*)\t([^\t]*)\t([^\t]*)\t([^\n]*)\n",$linha,$campos);
+      $dados["nm_cliente"] = $campos[2];
+      $dados["telefone"] = $campos[3];
+      $dados["endereco"] = $campos[4];
+      $dados["observacao"] = $campos[5];
+      $acsbd->inclui_cliente($dados);
+   }
+   $acsbd->desconectar();
+?>
+</body>
+</html>

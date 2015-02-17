@@ -1,0 +1,30 @@
+<?
+   switch($acao)
+   {
+      case "incluir":
+         include("comum/acsbd.inc");
+         $acsbd = new AcsBD();
+         $acsbd->conectar();
+         $acsbd->inclui_usuario_peca($nm_novo_usuario);
+         $acsbd->desconectar();
+         include("cadastro_usuario_peca.php");
+         break;
+      case "excluir":
+         if(!isset($usuario_selecionado))
+            $aviso="Selecione um usu&aacute;rio para excluir";
+         else
+         {
+            include("comum/acsbd.inc");
+            $acsbd = new AcsBd();
+            $acsbd->conectar();
+            $lista_pecas_usadas = $acsbd->obtem_lista_peca_usada_usuario($usuario_selecionado);
+            if(!empty($lista_pecas_usadas))
+               $aviso="Este usu&aacute;rio n&atilde;o pode ser excluido pois tem pe&ccedil;as pendentes";
+            else
+               $acsbd->exclui_usuario_peca($usuario_selecionado);
+            $acsbd->desconectar();
+         }
+         include("cadastro_usuario_peca.php");
+         break;
+   }
+?>

@@ -1,0 +1,10 @@
+<?php
+   include("comum.inc");
+   if(!login_correto())
+      include("login.php");
+   else
+   {
+      if($acao_exibicao=="voltar")
+         include("lista_peca.php");
+   }
+?>

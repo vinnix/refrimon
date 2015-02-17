@@ -1,0 +1,28 @@
+<html>
+<head>
+<title>Carrega Pecas</title>
+</head>
+<body>
+<?
+   include("comum/acsbd.inc");
+   $nm_arquivo_cli = "pecamont.txt";
+
+   $linhas = file($nm_arquivo_cli);
+   $acsbd = new AcsBD();
+   $acsbd->conectar();
+   while(list($i,$linha)=each($linhas))
+   {
+      ereg("([^\t]*)\t([^\-]*)\-[ ]?([^\t]*)\t([^\t]*)\t([^\t]*)\t[R\$ ]*([^\t]*)\t[R\$ ]*([^\t]*)\t([^\n]*)\n",$linha,$campos);
+      $dados["prefixo"] = $campos[2];
+      $dados["nm_peca"] = $campos[3];
+      $dados["quantidade"] = $campos[4];
+      $dados["quantidade_minima"] = $campos[5];
+      $dados["valor_compra"] = ereg_replace(",",".",$campos[6]);
+      $dados["valor_venda"] = ereg_replace(",",".",$campos[7]);
+      $dados["endereco"] = $campos[8];
+      $acsbd->inclui_peca($dados);
+   }
+   $acsbd->desconectar();
+?>
+</body>
+</html>
