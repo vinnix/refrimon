@@ -19,5 +19,4 @@ Sistema de Lojas
  mysql>  GRANT ALL PRIVILEGES ON *.* TO 'refrimonusr'@'localhost';
  mysql>  FLUSH PRIVILEGES;
 
-
- $ mysql -u refrimonusr -p
+ $  mysql -p -u refrimonusr bd_refrimon < bd_refrimon.sql
